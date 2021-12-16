@@ -17,13 +17,13 @@ int main()
 	Message buff;
 	pthread_t th_send;
 
-	struct sockaddr_in addr; //서버ip를 가지는 변수 
+	struct sockaddr_in addr; 
 	 
 		pthread_t th_recv[10];
 
 		msgbuff = (Message *)malloc(sizeof(Message) * MAX_BUFF);
 
-		th_id = pthread_create(&th_send, NULL, sendThread, 0); //보내는 thread 생성 
+		th_id = pthread_create(&th_send, NULL, sendThread, 0);  
 
 		if (th_id < 0) {
 			printf("Send Thread Creation Failed\n");
@@ -31,8 +31,8 @@ int main()
 		}
 		
 		addr.sin_family = AF_INET; 
-		addr.sin_port = htons(36007); //port정해져있음 
-		addr.sin_addr.s_addr = INADDR_ANY; //주소값 
+		addr.sin_port = htons(36007); 
+		addr.sin_addr.s_addr = INADDR_ANY; 
 
 		
 		if ((sock_main = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
@@ -40,20 +40,20 @@ int main()
 			exit(1);
 		}
 
-		// bind() 구조체 안에 설정한것을 소켓에다 넣어줌 
+		 
 		if (bind(sock_main, (struct sockaddr*)&addr, sizeof(addr)) == -1) {
 			printf("Bind Failed\n");
 			exit(2);
 		}
 
-		// listen(서버소켓, 받을 클라이언트 수)
+		
 		if (listen(sock_main, 5) == -1) {
 			printf("Listen Failed\n");
 			exit(3);
 		}
 
 		while (1) {
-			// server에 들어오는 client accept, socket 생성 
+			
 			if ((sock_client[count] = accept(sock_main, NULL, NULL)) == -1) {
 				printf("Accept Failed\n");
 				continue;

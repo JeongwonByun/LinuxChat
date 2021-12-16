@@ -38,14 +38,14 @@ int rear = -1;
 
 //Send
 void *sendThread() { 
-	Message *tmp; //메세지 구조체 (보낼 문자열, user id )
+	Message *tmp; 
 
 	printf("Send Thread Start\n");
 
 	while (1) {		
-		if ((tmp = dequeue()) != NULL) { //queue에서 꺼내서줌(dequeue) tmp에 집어넣어
+		if ((tmp = dequeue()) != NULL) { 
 			for (int i = 0; i < 10; i++) {
-				if (i != tmp->user_id) { //userid가 동일한 경우 해당 유저에게는 메세지를 보내지 않아도됨
+				if (i != tmp->user_id) { 
 					send(sock_client[i], (char*)tmp, sizeof(Message), 0);
 				}
 			}
@@ -59,9 +59,9 @@ void *recvThread(void *data) {
 	Message buff;
 	int thread_id = *((int*)data);
 
-	printf("Receive Thread %d Start\n", thread_id);//client접속하면
+	printf("Receive Thread %d Start\n", thread_id);
 
-	memset(&buff, 0, sizeof(Message)); //메모리 크기 특정값으로 초기화
+	memset(&buff, 0, sizeof(Message)); 
 
 	while (recv(sock_client[thread_id], (char*)&buff, sizeof(buff), 0) > 0) {
 		buff.user_id = thread_id;
@@ -72,12 +72,12 @@ void *recvThread(void *data) {
 }
 
 void *sendThreadClient() {
-	Message tmp;//메세지 구조체 (보낼 문자열, user id)
+	Message tmp;
 	int count;
 
 	while (1) {
 		
-		memset(&tmp, 0, sizeof(tmp)); //메모리 크기 특정값으로 초기
+		memset(&tmp, 0, sizeof(tmp)); 
 		//scanf("%[^\n]s", tmp.str);
 		fgets(tmp.str, MAX_MESSAGE_LEN, stdin);
 		tmp.str[strlen(tmp.str) - 1] = '\0';
@@ -87,21 +87,21 @@ void *sendThreadClient() {
 	}
 }
 
-int isFull() { //queue가 가득 차 있으면면 true 아니면 false 반환 
+int isFull() { 
  	if ((front == rear + 1) || (front == 0 && rear == MAX_BUFF - 1)) {
 		return 1;
 	}
 	return 0;
 }
 
-int isEmpty() { //queue가 비어 있으면 true 아니면 false 반환 
+int isEmpty() {  
 	if (front == -1) {
 		return 1;
 	}
 	return 0;
 }
 
-int enqueue(Message item) { //queue 뒤에 추가 
+int enqueue(Message item) {  
 
 	if (isFull()) {
 		return -1;
@@ -122,10 +122,10 @@ int enqueue(Message item) { //queue 뒤에 추가
 Message* dequeue() { 
 	Message *item;
 
-	if (isEmpty()) { //queue가 비어있지 않을때 
+	if (isEmpty()) { 
 		return NULL;
 	}
-	else { // 맨 앞의 요소를 삭제 반환 
+	else {  
 		pthread_mutex_lock(&mutex);
 		item = &msgbuff[front];
 

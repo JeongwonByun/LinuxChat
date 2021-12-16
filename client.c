@@ -32,7 +32,7 @@ int main(){
 			exit(4);
 		}
 
-		th_id = pthread_create(&th_send, NULL, sendThreadClient, 0); //보내는 thread 생성 
+		th_id = pthread_create(&th_send, NULL, sendThreadClient, 0);  
 
 		if (th_id < 0) {
 			printf("Send Thread Creation Failed\n");
